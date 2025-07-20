@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65e2e8c55762845276d7f3cce3093a7b",
+    "content-hash": "4bfe76662b29f8595854aca482e7d631",
     "packages": [
         {
             "name": "brick/math",
@@ -2005,6 +2005,69 @@
                 }
             ],
             "time": "2024-12-08T08:18:47+00:00"
+        },
+        {
+            "name": "livewire/flux",
+            "version": "v2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/livewire/flux.git",
+                "reference": "0fb4c0b78eac393ad3a19a387af193573c310371"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/livewire/flux/zipball/0fb4c0b78eac393ad3a19a387af193573c310371",
+                "reference": "0fb4c0b78eac393ad3a19a387af193573c310371",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "illuminate/view": "^10.0|^11.0|^12.0",
+                "laravel/prompts": "^0.1|^0.2|^0.3",
+                "livewire/livewire": "^3.5.19",
+                "php": "^8.1",
+                "symfony/console": "^6.0|^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Flux": "Flux\\Flux"
+                    },
+                    "providers": [
+                        "Flux\\FluxServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Flux\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Caleb Porzio",
+                    "email": "calebporzio@gmail.com"
+                }
+            ],
+            "description": "The official UI component library for Livewire.",
+            "keywords": [
+                "components",
+                "flux",
+                "laravel",
+                "livewire",
+                "ui"
+            ],
+            "support": {
+                "issues": "https://github.com/livewire/flux/issues",
+                "source": "https://github.com/livewire/flux/tree/v2.2.3"
+            },
+            "time": "2025-07-11T00:25:51+00:00"
         },
         {
             "name": "livewire/livewire",
@@ -6039,6 +6102,75 @@
                 "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.1.1"
             },
             "time": "2025-04-30T06:54:44+00:00"
+        },
+        {
+            "name": "ibex/crud-generator",
+            "version": "v2.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/awais-vteams/laravel-crud-generator.git",
+                "reference": "e40fd30f1136e5c9564256253dc8a4db46b1d3ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/awais-vteams/laravel-crud-generator/zipball/e40fd30f1136e5c9564256253dc8a4db46b1d3ba",
+                "reference": "e40fd30f1136e5c9564256253dc8a4db46b1d3ba",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.30|^11.44|^12.2",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ibex\\CrudGenerator\\CrudServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ibex\\CrudGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "M Awais",
+                    "email": "asargodha@gmail.com"
+                }
+            ],
+            "description": "Laravel CRUD Generator",
+            "keywords": [
+                "alpine js",
+                "bootstrap css",
+                "crud",
+                "crud generator",
+                "laravel",
+                "laravel crud generator",
+                "laravel package",
+                "livewire",
+                "tailwind css"
+            ],
+            "support": {
+                "issues": "https://github.com/awais-vteams/laravel-crud-generator/issues",
+                "source": "https://github.com/awais-vteams/laravel-crud-generator/tree/v2.1.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/awais-vteams",
+                    "type": "github"
+                },
+                {
+                    "url": "https://ko-fi.com/mawais",
+                    "type": "ko_fi"
+                }
+            ],
+            "time": "2025-04-04T02:58:08+00:00"
         },
         {
             "name": "laravel/pail",
