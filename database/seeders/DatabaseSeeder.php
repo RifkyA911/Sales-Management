@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +12,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Urutan sangat penting!
+        // Tabel tanpa foreign key harus di-seed duluan
+        $this->call([
+            JenSeeder::class,      // Kode_Tjen di T_Jual
+            CustomerSeeder::class, // Kode_Customer di T_Jual
+            BarangSeeder::class,   // Kode_Barang di T_D_Jual
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            JualSeeder::class,     // No_Faktur di T_D_Jual, dan butuh TJen, TCustomer
+            // TDJualSeeder::class, // Tidak perlu lagi karena TDJual dibuat di TJualSeeder
         ]);
     }
 }
