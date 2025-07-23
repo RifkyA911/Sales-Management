@@ -1,10 +1,13 @@
 @import "tailwindcss";
 @source '../**/*.blade.php';
 @source '../**/*.js';
-/* @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php'; */
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views.php';
 
-@plugin "daisyui";
+@plugin "daisyui" {
+    themes: light --default;
+}
+
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
 /* @import "../../vendor/livewire/flux/dist/flux.css"; */
@@ -14,4 +17,11 @@
     --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji", Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+#jualTable th,
+#jualTable td {
+    text-align: left !important;
+    vertical-align: middle;
+    padding: 8px;
 }

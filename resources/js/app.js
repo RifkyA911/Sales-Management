@@ -1,13 +1,14 @@
 import "./bootstrap";
 import $ from "jquery";
-window.$ = $;
-window.jQuery = $;
 
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/dataTables.dataTables.css";
-import "./toast.js";
+import "./utils/toast.js";
+import { loadSelectData } from "./utils/fetchData.js";
 
-import "./barangs/renderButton.js";
+window.loadSelectData = loadSelectData;
+window.$ = $;
+window.jQuery = $;
 
 $(document).ready(function () {
     $("#barangTable").DataTable();
