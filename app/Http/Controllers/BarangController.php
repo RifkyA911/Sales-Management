@@ -19,7 +19,12 @@ class BarangController extends Controller
         if (request()->ajax() || request()->wantsJson()) {
             return response()->json(['data' => $barangs]);
         }
-        return view('barangs.index', compact('barangs'));
+
+        $breadcrumbs = [
+            ['label' => 'Home', 'url' => route('juals.index'), 'active' => false, 'icon' => 'fa-home'],
+            ['label' => 'Daftar Barang', 'url' => route('barangs.index'), 'active' => true, 'icon' => 'fa-box']
+        ];
+        return view('barangs.index', compact('barangs', 'breadcrumbs'));
     }
 
     public function create(): View

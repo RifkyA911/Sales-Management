@@ -22,7 +22,12 @@ class CustomerController extends Controller // Ubah nama kelas jika Anda menguba
         if (request()->ajax() || request()->wantsJson()) {
             return response()->json(['data' => $customers]);
         }
-        return view('customers.index', compact('customers'));
+
+        $breadcrumbs = [
+            ['label' => 'Home', 'url' => route('juals.index'), 'active' => false, 'icon' => 'fa-home'],
+            ['label' => 'Daftar Customer', 'url' => route('customers.index'), 'active' => true, 'icon' => 'fa-users']
+        ];
+        return view('customers.index', compact('customers', 'breadcrumbs'));
     }
 
     /**
@@ -78,7 +83,12 @@ class CustomerController extends Controller // Ubah nama kelas jika Anda menguba
     public function edit(string $kode_customer): View
     {
         $customer = Customer::findOrFail($kode_customer);
-        return view('customers.edit', compact('customer'));
+
+        $breadcrumbs = [
+            ['label' => 'Home', 'url' => route('juals.index'), 'active' => false, 'icon' => 'fa-home'],
+            ['label' => 'Edit Customer', 'url' => route('customers.index'), 'active' => true, 'icon' => 'fa-users']
+        ];
+        return view('customers.edit', compact('customer', 'breadcrumbs'));
     }
 
     /**
