@@ -41,8 +41,8 @@ class DJualFactory extends Factory
         return $this->state(function (array $attributes) use ($barang) {
             $qty = $this->faker->numberBetween(1, 5);
             $harga = $barang->Harga_Barang;
-            $diskon = $this->faker->randomElement([0, (int) ($harga * 0.01), (int) ($harga * 0.05)]); // Diskon persen
-            $diskon = round($diskon, 2); // Bulatkan diskon
+            $diskon = min(8000, $this->faker->randomElement([0, (int) ($harga * 0.01), (int) ($harga * 0.05)])); // Diskon persen, max 80.00
+            // $diskon = round($diskon, 2); // Bulatkan diskon
 
             $bruto = $harga * $qty;
             $jumlah = $bruto - $diskon;
