@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View; // Import untuk tipe kembalian View
 use Illuminate\Http\RedirectResponse; // Import untuk tipe kembalian RedirectResponse
@@ -14,9 +15,13 @@ class CustomerController extends Controller // Ubah nama kelas jika Anda menguba
      * Display a listing of the resource.
      * Mengambil daftar customer dan selalu mengembalikan View.
      */
-    public function index(): View
+    public function index(): View|JsonResponse
     {
-        $customers = Customer::all();
+        $customers = Customer::all()->sortBy('Nama_Customer')->values();
+
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json(['data' => $customers]);
+        }
         return view('customers.index', compact('customers'));
     }
 

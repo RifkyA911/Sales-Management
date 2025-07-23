@@ -16,5 +16,6 @@ class JenSeeder extends Seeder
         Jen::create(['Kode_Tjen' => 'K', 'Nama_Tjen' => 'Kredit']);
         Jen::create(['Kode_Tjen' => 'T', 'Nama_Tjen' => 'Tunai']);
         Jen::create(['Kode_Tjen' => 'C', 'Nama_Tjen' => 'Cicilan']);
+        Jen::create(['Kode_Tjen' => 'C', 'Nama_Tjen' => 'Lunas']);
     }
 }

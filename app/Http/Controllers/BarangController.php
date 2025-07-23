@@ -12,9 +12,13 @@ use Illuminate\View\View;
 
 class BarangController extends Controller
 {
-    public function index(): View
+    public function index(): View|JsonResponse
     {
         $barangs = Barang::all();
+
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json(['data' => $barangs]);
+        }
         return view('barangs.index', compact('barangs'));
     }
 
@@ -44,14 +48,24 @@ class BarangController extends Controller
 
     }
 
-    public function show(string $kode_barang): View
+    public function show(string $kode_barang): View|JsonResponse
     {
         $barang = Barang::where('Kode_Barang', $kode_barang)->firstOrFail();
 
         if (!$barang) {
-            abort(404, 'Customer tidak ditemukan'); // Langsung abort 404 jika tidak ditemukan
+            abort(404, 'Barang tidak ditemukan');
         }
-        return view('barangs.show', compact('barang'));
+
+        if (request()->ajax()) {
+            return response()->json(['data' => $barang]);
+        }
+
+        $breadcrumbs = [
+            ['label' => 'Home', 'url' => route('barangs.index'), 'active' => false, 'icon' => 'fa-home'],
+            ['label' => 'Detail Barang', 'url' => route('barangs.show', $kode_barang), 'active' => true, 'icon' => 'fa-eye']
+        ];
+
+        return view('barangs.show', compact('barang', 'breadcrumbs'));
     }
 
     public function edit(string $kode_barang): View
