@@ -4,7 +4,9 @@
     <div class="max-w-6xl p-6 mx-auto bg-white rounded-lg shadow-md">
         <div class="flex items-center justify-between mb-4">
             <h1 class="text-2xl font-bold">Daftar Barang</h1>
-            <button class="btn btn-primary btn-sm" onclick="addBarangModal.showModal()">Tambah Barang</button>
+            <button class="btn btn-info text-white" onclick="addBarangModal.showModal()"><i class="fa-solid fa-plus mr-2 "></i>
+                Tambah
+                Barang</button>
         </div>
 
         @if (session('success'))
@@ -35,17 +37,16 @@
                             <td class="px-4 py-2">{{ $barang->Nama_Barang }}</td>
                             <td class="px-4 py-2">Rp {{ number_format($barang->Harga_Barang, 2, ',', '.') }}</td>
                             <td class="px-4 py-2 text-center space-x-2">
-                                <button class="btn btn-sm btn-warning"
+                                <button class="btn btn-success text-white"
                                     onclick="openEditModal('{{ $barang->Kode_Barang }}', '{{ $barang->Nama_Barang }}', '{{ $barang->Harga_Barang }}')">
-                                    Edit
+                                    <i class="fas fa-pen"></i>
                                 </button>
-                                <form action="{{ route('barangs.destroy', $barang->Kode_Barang) }}" method="POST"
+                                {{-- <form action="{{ route('barangs.destroy', $barang->Kode_Barang) }}" method="POST"
                                     class="inline">
                                     @csrf @method('DELETE')
-                                    <button onclick="return confirm('Yakin hapus?')"
-                                        class="btn btn-sm btn-error text-white">Hapus</button>
-                                </form>
-                                {{-- {!! '<script>document.write(renderActionButtons(' . json_encode($barang) . '))</script>' !!} --}}
+                                    <button onclick="return confirm('Yakin hapus?')" class="btn btn-error text-white"><i
+                                            class="fas fa-trash"></i></button>
+                                </form> --}}
                             </td>
                         </tr>
                     @endforeach

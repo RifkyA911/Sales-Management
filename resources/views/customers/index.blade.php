@@ -4,7 +4,7 @@
     <div class="max-w-4xl p-6 mx-auto bg-white border border-gray-200 rounded-lg shadow-md">
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Daftar Customer</h1>
-            <a href="{{ route('customers.create') }}"
+            {{-- <a href="{{ route('customers.create') }}"
                 class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-900 border border-transparent rounded-md hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
@@ -12,14 +12,13 @@
                     </path>
                 </svg>
                 Tambah Customer Baru
-            </a>
+            </a> --}}
             <!-- Modal Tambah/Edit Customer -->
             @include('customers.partials.modal')
         </div>
 
         @if (session('success'))
-            <div class="px-4 py-3 mb-4 text-sm text-green-700 border border-green-200 rounded-md bg-green-50"
-                role="alert">
+            <div class="px-4 py-3 mb-4 text-sm text-green-700 border border-green-200 rounded-md bg-green-50" role="alert">
                 {{ session('success') }}
             </div>
         @endif

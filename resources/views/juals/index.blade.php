@@ -10,15 +10,6 @@
 
         <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 p-4 shadow">
             <table id="jualTable" class="table min-w-full text-sm text-left text-gray-600 ">
-                <thead>
-                    <tr>
-                        <th>No Faktur</th>
-                        <th>Tanggal</th>
-                        <th>Customer</th>
-                        <th>Total Jumlah (IDR)</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
             </table>
         </div>
     </div>
@@ -38,17 +29,43 @@
                             }
                         },
                         columns: [{
-                                data: 'No_Faktur'
+                                data: 'No_Faktur',
+                                title: 'No. Faktur'
                             },
                             {
-                                data: 'Tgl_Faktur'
+                                data: 'Tgl_Faktur',
+                                title: 'Tanggal Faktur'
                             },
                             {
                                 data: 'customer.Nama_Customer',
+                                title: 'Nama Customer',
                                 defaultContent: '-'
                             },
                             {
+                                data: 'jen.Nama_Tjen',
+                                title: 'Jenis Transaksi',
+                                defaultContent: '-'
+                            },
+                            {
+                                data: 'Total_Bruto',
+                                title: 'Total Bruto (IDR)',
+                                render: function(data) {
+                                    return new Intl.NumberFormat('id-ID', {
+                                        style: 'currency',
+                                        currency: 'IDR'
+                                    }).format(data);
+                                }
+                            },
+                            {
+                                data: 'Total_Diskon',
+                                title: 'Total Diskon %',
+                                render: function(data) {
+                                    return `${data}`;
+                                }
+                            },
+                            {
                                 data: 'Total_Jumlah',
+                                title: 'Total Jumlah (IDR)',
                                 render: function(data) {
                                     return new Intl.NumberFormat('id-ID', {
                                         style: 'currency',

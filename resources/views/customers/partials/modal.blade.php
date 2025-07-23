@@ -1,6 +1,6 @@
         <div>
-
-            <button class="btn" onclick="add_customer.showModal()">open modal</button>
+            <button class="btn btn-info text-white" onclick="add_customer.showModal()"><i
+                    class="fa-solid fa-plus mr-2"></i> Tambah Customer</button>
             <dialog id="add_customer" class="modal">
                 <div class="relative p-4 bg-white rounded-lg shadow-lg sm:p-6">
                     <button type="button" onclick="add_customer.close()"
