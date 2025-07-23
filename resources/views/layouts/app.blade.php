@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="cupcake">
 
 <head>
     <meta charset="UTF-8">
@@ -19,26 +19,37 @@
 <body class="font-sans antialiased leading-normal tracking-tight text-gray-900 bg-gray-50">
     <div class="flex flex-col min-h-screen">
         {{-- Navbar (opsional, contoh sederhana) --}}
-        <nav class="p-4 bg-white border-b border-gray-200 shadow-sm">
-            <div class="container flex items-center justify-between mx-auto">
-                <div class="flex gap-4 items-center">
-                    <i class="fa-solid fa-receipt fa-lg"></i>
-                    <a href="{{ route('customers.index') }}"
-                        class="text-xl font-bold text-gray-800 transition-colors duration-200 hover:text-blue-600 align-baseline">
-                        Aplikasi Transaksi Penjualan
-                    </a>
-                </div>
-                {{-- Navigasi tambahan di sini jika ada --}}
-                <div>
-                    <a href="{{ route('customers.index') }}"
-                        class="mx-2 text-gray-600 transition-colors duration-200 hover:text-blue-600">Home</a>
-                    {{-- <a href="#" class="mx-2 text-gray-600 transition-colors duration-200 hover:text-blue-600">About</a> --}}
-                </div>
-            </div>
-        </nav>
+        @include('layouts.navbar')
 
         {{-- Konten Utama Halaman --}}
-        <main class="container flex-grow px-4 py-8 mx-auto">
+        <main class="container flex-grow p-4 mx-auto">
+            @if (isset($breadcrumbs) && is_array($breadcrumbs))
+                <div class="breadcrumbs text-sm p-4">
+                    <ul>
+                        @foreach ($breadcrumbs as $breadcrumb)
+                            <li>
+                                @if (isset($breadcrumb['url']))
+                                    <a href="{{ $breadcrumb['url'] }}"
+                                        class="{{ $breadcrumb['active'] ? 'font-bold text-blue-600' : '' }}">
+                                        @if (!empty($breadcrumb['icon']))
+                                            <i class="fa-solid {{ $breadcrumb['icon'] }}"></i>
+                                        @endif
+                                        {{ $breadcrumb['label'] }}
+                                    </a>
+                                @else
+                                    <span
+                                        class="inline-flex items-center gap-2 {{ $breadcrumb['active'] ? 'font-bold text-blue-600' : '' }}">
+                                        @if (!empty($breadcrumb['icon']))
+                                            <i class="fa-solid {{ $breadcrumb['icon'] }}"></i>
+                                        @endif
+                                        {{ $breadcrumb['label'] }}
+                                    </span>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             @yield('content')
         </main>
 
@@ -48,7 +59,6 @@
         </footer>
     </div>
 
-    {{-- Jika Anda memutuskan kembali ke Livewire di masa depan --}}
     {{-- @livewireScripts --}}
     <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;"></div>
 

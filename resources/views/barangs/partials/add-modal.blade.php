@@ -22,14 +22,17 @@
                 <label class="label" for="Kode_Barang">Kode Barang</label>
                 <input type="text" name="Kode_Barang" id="Kode_Barang" class="input bg-white" required
                     maxlength="10">
+                <p class="mt-1 text-sm text-red-500" id="error_Kode_Barang"></p>
             </div>
             <div class="form-control">
                 <label class="label" for="Nama_Barang">Nama Barang</label>
                 <input type="text" name="Nama_Barang" class="input bg-white" required maxlength="20">
+                <p class="mt-1 text-sm text-red-500" id="error_Nama_Barang"></p>
             </div>
             <div class="form-control">
                 <label class="label" for="Harga_Barang">Harga Barang</label>
                 <input type="number" name="Harga_Barang" class="input bg-white" required step="0.01">
+                <p class="mt-1 text-sm text-red-500" id="error_Harga_Barang"></p>
             </div>
             <div class="modal-action">
                 <button type="button" onclick="addBarangModal.close()" class="btn">Batal</button>

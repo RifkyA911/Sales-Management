@@ -14,7 +14,7 @@
                 Tambah Customer Baru
             </a>
             <!-- Modal Tambah/Edit Customer -->
-            @include('customers.components.modal')
+            @include('customers.partials.modal')
         </div>
 
         @if (session('success'))
