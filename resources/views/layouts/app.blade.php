@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Aplikasi Customer</title>
+    <title>Aplikasi Transaksi Penjualan</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,7 +55,7 @@
 
         {{-- Footer (opsional) --}}
         <footer class="py-4 mt-8 text-center text-gray-600 bg-gray-100 border-t border-gray-200">
-            &copy; {{ date('Y') }} Aplikasi Customer. Dibuat dengan Laravel & Tailwind CSS.
+            &copy; {{ date('Y') }} Aplikasi Transaksi Penjualan.
         </footer>
     </div>
 

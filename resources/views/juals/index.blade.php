@@ -5,11 +5,7 @@
         <h1 class="text-xl font-bold mb-4">Data Penjualan / Invoice </h1>
         <div class="flex gap-2 justify-end">
             <button id="addNew" type="button" class="btn btn-info mb-3 text-white"><i class="fas fa-plus mr-2"></i> Tambah
-                Invoice</button>
-            <button type="button" class="btn mb-3" onclick="$('#jualTable').DataTable().ajax.reload();">
-                <i class="fas fa-sync-alt cursor-pointer" id="refreshTable"></i>
-            </button>
-
+                Penjualan</button>
         </div>
 
         <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 p-4 shadow">
@@ -67,13 +63,16 @@
                                 render: function(data) {
                                     return `
                                     <div class="flex gap-2">
+                                        <a href="/juals/${data.No_Faktur}/print" target="_blank" class="hidden btn btn-outline btn-warning text-warning">
+                                            <i class="fa-solid fa-print"></i>
+                                        </a>
+                                        <a href="{{ route('juals.export.csv') }}" class="hidden btn btn-outline btn-success text-success">
+                                            <i class="fa-solid fa-file-csv"></i>
+                                        </a>
                                         <a href="/juals/${data.No_Faktur}/edit" class="btn btn-success text-white edit" data-id="${data.No_Faktur}"><i class="fa-solid fa-pen"></i></a>
-                                        <form action="/juals/${data.No_Faktur}" method="POST" class="inline-block ml-2"
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus penjualan ini?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-error text-white delete" data-id="${data.No_Faktur}"><i class="fa-solid fa-trash"></i></button>
-                                        </form>
+                                        <button class="btn btn-error text-white jual-delete" data-id="${data.No_Faktur}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
                                     </div>
                                     `;
                                 }
@@ -125,6 +124,35 @@
                             }
                         });
                     });
+
+                    // Hapus Data
+                    $(document).on('click', '.jual-delete', function(e) {
+                        e.preventDefault();
+                        const noFaktur = $(this).data('id');
+
+                        if (!confirm('Apakah Anda yakin ingin menghapus penjualan ini?')) {
+                            return;
+                        }
+
+                        $.ajax({
+                            url: `/juals/${noFaktur}`,
+                            type: 'POST',
+                            data: {
+                                _method: 'DELETE',
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                showToast(response.message || 'Penjualan berhasil dihapus',
+                                    'success');
+                                $('#jualTable').DataTable().ajax.reload();
+                            },
+                            error: function(xhr) {
+                                console.error('Gagal menghapus:', xhr.responseText);
+                                alert('Terjadi kesalahan saat menghapus data');
+                            }
+                        });
+                    });
+
 
                     $('.closeJualModal').click(function() {
                         $('#jualModal').removeClass('modal-open');

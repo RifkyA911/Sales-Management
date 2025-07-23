@@ -55,7 +55,7 @@
             <hr class="my-4 border-gray-200" />
 
             {{-- DETAIL --}}
-            <div class="flex gap-4 items-center mb-4">
+            <div id="jualDetailSection" class="flex gap-4 items-center mb-4">
                 <i class="fa-solid fa-file-invoice text-xl"></i>
                 <h2 class="font-bold text-xl">
                     Detail Penjualan /
@@ -132,11 +132,25 @@
             </form>
             <hr class="my-8 border-gray-200" />
 
-            <div class="flex gap-4 items-center mb-4">
-                <i class="fa-solid fa-table text-xl"></i>
-                <h2 class="font-bold text-xl">
-                    Daftar Barang Penjualan /
-                    Invoice</h2>
+            <div class="flex gap-4 items-center mb-4 justify-between">
+                <div class="flex gap-4 items-center">
+                    <i class="fa-solid fa-table text-xl"></i>
+                    <h2 class="font-bold text-xl">
+                        Daftar Barang Penjualan /
+                        Invoice</h2>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex gap-4">
+                        <a href="{{ route('juals.print', $jual->No_Faktur) }}" target="_blank" class="btn">
+                            <i class="fa-solid fa-print mr-2"></i> Preview & Print PDF
+                        </a>
+                        <a href="{{ route('djuals.export.csv', ['no_faktur' => $jual->No_Faktur]) }}"
+                            class="btn btn-soft btn-success mb-3">
+                            <i class="fa-solid fa-file-csv mr-2"></i>
+                            Export CSV
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 p-4">
 
@@ -148,18 +162,18 @@
             <hr class="my-8 border-gray-200" />
             <div class="flex flex-col gap-2 md:w-1/2 md:ml-auto">
                 <div class="flex justify-between items-center">
-                    <h5 class="font-bold">Total Bruto</h5>
-                    <input type="text" readonly class="input text-right font-bold"
+                    <h5 class="font-bold">Total Bruto (IDR)</h5>
+                    <input id="Total_Bruto" type="text" readonly class="input text-right font-bold"
                         value="{{ 'Rp ' . number_format($jual->Total_Bruto, 2, ',', '.') }}">
                 </div>
                 <div class="flex justify-between items-center">
-                    <h5 class="font-bold">Total Diskon</h5>
-                    <input type="text" readonly class="input text-right font-bold"
-                        value="{{ 'Rp ' . number_format($jual->Total_Diskon, 2, ',', '.') }}">
+                    <h5 class="font-bold">Total Diskon %</h5>
+                    <input id="Total_Diskon" type="text" readonly class="input text-right font-bold"
+                        value="{{ $jual->Total_Diskon }}">
                 </div>
                 <div class="flex justify-between items-center">
-                    <h5 class="font-bold">Total Jumlah</h5>
-                    <input type="text" readonly class="input text-right font-bold"
+                    <h5 class="font-bold">Total Jumlah (IDR)</h5>
+                    <input id="Total_Jumlah" type="text" readonly class="input text-right font-bold"
                         value="{{ 'Rp ' . number_format($jual->Total_Jumlah, 2, ',', '.') }}">
                 </div>
             </div>
@@ -203,22 +217,47 @@
                         });
                     }
                 });
-                $.ajax({
-                    url: "{{ route('barangs.index') }}",
-                    method: 'GET',
-                    success: function(response) {
-                        // console.log('Barangs:', response);
 
-                        response.data.forEach(function(barang) {
-                            $('#Kode_Barang').append(
-                                `<option value="${barang.Kode_Barang}">${barang.Kode_Barang}</option>`
-                            );
-                            $('#Nama_Barang').append(
-                                `<option value="${barang.Nama_Barang}" data-kode-barang="${barang.Kode_Barang}">${barang.Nama_Barang}</option>`
-                            );
-                        });
-                    }
-                });
+                // $.ajax({
+                //     url: "{{ route('barangs.index') }}",
+                //     method: 'GET',
+                //     success: function(response) {
+                //         // console.log('Barangs:', response);
+
+                //         response.data.forEach(function(barang) {
+                //             $('#Kode_Barang').append(
+                //                 `<option value="${barang.Kode_Barang}">${barang.Kode_Barang}</option>`
+                //             );
+                //             $('#Nama_Barang').append(
+                //                 `<option value="${barang.Nama_Barang}" data-kode-barang="${barang.Kode_Barang}">${barang.Nama_Barang}</option>`
+                //             );
+                //         });
+                //     }
+                // });
+
+                function updateBarangDropdown(barangs) {
+                    $('#Kode_Barang').empty().append(
+                        '<option value="" disabled selected>Pilih Barang</option>');
+                    $('#Nama_Barang').empty().append(
+                        '<option value="" disabled selected>Pilih Barang</option>');
+
+                    barangs.forEach(barang => {
+                        $('#Kode_Barang').append(
+                            `<option value="${barang.Kode_Barang}">${barang.Kode_Barang}</option>`
+                        );
+                        $('#Nama_Barang').append(
+                            `<option value="${barang.Nama_Barang}" data-kode-barang="${barang.Kode_Barang}">${barang.Nama_Barang}</option>`
+                        );
+                    });
+                }
+
+
+                function loadAvailableBarangs() {
+                    $.ajax(`/djuals/{{ $jual->No_Faktur }}/available-barangs`)
+                        .then(response => updateBarangDropdown(response));
+                }
+                loadAvailableBarangs();
+
 
                 $('#Kode_Barang').on('change', function() {
                     const selectedValue = $(this).val();
@@ -323,45 +362,6 @@
                     $('#Jumlah').val(netto.toFixed(2));
                 });
 
-                $('#jualDetailForm').submit(function(e) {
-                    e.preventDefault();
-
-                    console.log("Form is being submitted");
-
-                    const formData = $(this).serializeArray();
-                    formData.push({
-                        name: 'No_Faktur',
-                        value: '{{ $jual->No_Faktur }}'
-                    });
-
-                    $.ajax({
-                        url: "{{ route('djuals.store') }}",
-                        type: "POST",
-                        data: formData,
-                        success: function(response) {
-                            // console.log('Response:', response);
-                            $('#jualDetailTable').DataTable().ajax.reload();
-                            $('#jualDetailForm')[0].reset();
-                            $('#Kode_Barang').empty();
-                            $('#Nama_Barang').empty();
-                            $('#Kode_Barang').append(
-                                '<option value="" disabled selected>Pilih Barang</option>');
-                            $('#Nama_Barang').append(
-                                '<option value="" disabled selected>Pilih Barang</option>');
-                            showToast('Penjualan berhasil diupdate!', 'success');
-                        },
-                        error: function(error) {
-                            // console.error('Error:', error);
-                            const errors = error.responseJSON.errors;
-                            for (const key in errors) {
-                                if (errors.hasOwnProperty(key)) {
-                                    $(`#error_${key}`).text(errors[key][0]);
-                                }
-                            }
-                        }
-                    });
-                });
-
                 // ------------------------------------- Table Jual Detail -------------------------------------
 
                 const table = $('#jualDetailTable').DataTable({
@@ -422,19 +422,177 @@
                             render: function(data) {
                                 return `
                                     <div class="flex gap-2">
-                                        <button class="btn btn-success text-white edit" data-id="${data.Kode_Barang}"><i class="fa-solid fa-pen"></i></button>
-                                        <form action="/djuals/${data.No_Faktur}/${data.Kode_Barang}" method="POST" class="inline-block ml-2"
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus barang ini?');">
+                                        <button class="btn btn-success text-white djual-edit" data-id="${data.Kode_Barang}" data-nama-barang="${data.barang.Nama_Barang}"><i class="fa-solid fa-pen"></i></button>
+                                        <form action="/djuals/${data.No_Faktur}/${data.Kode_Barang}"
+                                            method="POST"
+                                            class="delete-djual-form inline-block ml-2">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-error text-white delete" data-id="${data.Kode_Barang}"><i class="fa-solid fa-trash"></i></button>
+                                            <button type="submit" class="btn btn-error text-white delete">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
                                         </form>
                                     </div>
                                     `;
                             }
                         }
-                    ]
+                    ],
+                    // dom: 'Bfrtip',
+                    // buttons: [
+                    //     'csvHtml5'
+                    // ]
                 });
+
+                let editMode = false;
+                let editUrl = '';
+
+                // button untuk mengedit barang detail penjualan
+                $(document).on('click', '.djual-edit', function() {
+                    const kodeBarang = $(this).data('id');
+                    const namaBarang = $(this).data('nama-barang');
+
+                    $.ajax(`{{ route('djuals.edit', [':no_faktur', ':kode_barang']) }}`
+                            .replace(':no_faktur', '{{ $jual->No_Faktur }}')
+                            .replace(':kode_barang', kodeBarang))
+                        .then(response => {
+                            console.log("Edit Response:", response);
+                            // Isi form
+                            $('html, body').animate({
+                                scrollTop: $('#jualDetailSection').offset().top
+                            }, 500);
+
+                            $('#Kode_Barang').empty().append(
+                                `<option value="${response.data.Kode_Barang}">${response.data.Kode_Barang}</option>`
+                            ).prop('disabled', true);
+                            // disabled tidak dianggap sebagai payload
+                            if ($('#Kode_Barang_hidden').length === 0) {
+                                $('<input>').attr({
+                                    type: 'hidden',
+                                    id: 'Kode_Barang_hidden',
+                                    name: 'Kode_Barang'
+                                }).appendTo('#jualDetailForm');
+                            }
+                            $('#Kode_Barang_hidden').val(response.data.Kode_Barang);
+
+                            $('#Nama_Barang').empty().append(
+                                `<option value="${namaBarang}" selected>${namaBarang}</option>`
+                            ).prop('disabled', true);
+                            $('#Harga').val(response.data.Harga);
+                            $('#Qty').val(response.data.Qty).removeAttr('disabled');
+                            $('#Diskon').val(response.data.Diskon).removeAttr('disabled');
+                            $('#Bruto').val(response.data.Bruto);
+                            $('#Jumlah').val(response.data.Jumlah);
+
+                            // Ubah ke mode edit
+                            editMode = true;
+                            editUrl = `{{ route('djuals.update', [':no_faktur', ':kode_barang']) }}`
+                                .replace(':no_faktur', '{{ $jual->No_Faktur }}')
+                                .replace(':kode_barang', kodeBarang);
+
+                            $('#addJualDetail')
+                                .removeClass('btn-info')
+                                .addClass('btn-warning')
+                                .html('<i class="fa-solid fa-pen mr-2"></i> Ubah Barang');
+
+                            if ($('#cancelEdit').length === 0) {
+                                $('<button type="button" id="cancelEdit" class="btn btn-secondary mb-3">Batal</button>')
+                                    .insertAfter('#addJualDetail')
+                                    .on('click', resetFormToAddMode);
+                            }
+                        });
+                });
+
+                // button untuk menghapus barang detail penjualan
+                $(document).on('submit', '.delete-djual-form', function(e) {
+                    e.preventDefault();
+
+                    if (!confirm('Apakah Anda yakin ingin menghapus barang ini?')) {
+                        return;
+                    }
+
+                    const form = $(this);
+                    const actionUrl = form.attr('action');
+
+                    $.ajax({
+                        url: actionUrl,
+                        type: 'POST',
+                        data: form.serialize(),
+                        success: function(response) {
+                            console.log('Delete Response:', response);
+                            $('#Total_Bruto').val(response.data.Total_Bruto);
+                            $('#Total_Diskon').val(response.data.Total_Diskon);
+                            $('#Total_Jumlah').val(response.data.Total_Jumlah);
+                            updateBarangDropdown(response.data.availableBarangs);
+                            showToast(response.message, 'success');
+                            $('#jualDetailTable').DataTable().ajax.reload();
+                        },
+                        error: function(xhr) {
+                            showToast('Gagal menghapus data', 'error');
+                            console.error(xhr.responseText);
+                        }
+                    });
+                });
+
+                // form
+
+                $('#jualDetailForm').submit(function(e) {
+                    e.preventDefault();
+
+                    console.log("Form is being submitted");
+
+                    const formData = $(this).serializeArray();
+                    formData.push({
+                        name: 'No_Faktur',
+                        value: '{{ $jual->No_Faktur }}'
+                    });
+
+                    const url = editMode ? editUrl : "{{ route('djuals.store') }}";
+                    const method = editMode ? 'PUT' : 'POST';
+
+                    $.ajax({
+                        url: url,
+                        type: method,
+                        data: formData,
+                        success: function(response) {
+                            console.log('jualDetailForm Response:', response);
+                            $('#Total_Bruto').val(response.data.Total_Bruto);
+                            $('#Total_Diskon').val(response.data.Total_Diskon);
+                            $('#Total_Jumlah').val(response.data.Total_Jumlah);
+                            updateBarangDropdown(response.data.availableBarangs);
+                            $('#jualDetailTable').DataTable().ajax.reload();
+                            $('#jualDetailForm')[0].reset();
+                            resetFormToAddMode();
+
+                            showToast('Penjualan berhasil diupdate!', 'success');
+                        },
+                        error: function(error) {
+                            const errors = error.responseJSON.errors;
+                            for (const key in errors) {
+                                if (errors.hasOwnProperty(key)) {
+                                    $(`#error_${key}`).text(errors[key][0]);
+                                }
+                            }
+                        }
+                    });
+                });
+
+                function resetFormToAddMode() {
+                    editMode = false;
+                    editUrl = '';
+                    $('#jualDetailForm')[0].reset();
+                    $('#Kode_Barang').prop('disabled', false);
+                    $('#Nama_Barang').prop('disabled', false);
+
+                    loadAvailableBarangs();
+
+                    $('#addJualDetail')
+                        .removeClass('btn-warning')
+                        .addClass('btn-info')
+                        .html('<i class="fa-solid fa-floppy-disk mr-2"></i> Simpan Barang');
+
+                    $('#cancelEdit').remove();
+                }
+
             });
         </script>
     @endpush
