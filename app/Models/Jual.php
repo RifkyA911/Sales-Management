@@ -52,14 +52,12 @@ class Jual extends Model
         $totalDiskon = $this->details->sum('Diskon');
         $totalJumlah = $this->details->sum('Jumlah');
 
-        // Penting: gunakan updateQuietly() atau disable events
-        // agar tidak terjadi loop rekursif jika ada event di TJual
+        // Penting: agar tidak terjadi loop rekursif jika ada event di TJual
         $this->updateQuietly([
             'Total_Bruto' => $totalBruto,
             'Total_Diskon' => $totalDiskon,
             'Total_Jumlah' => $totalJumlah,
         ]);
-        // Atau:
         // $this->Total_Bruto = $totalBruto;
         // $this->Total_Diskon = $totalDiskon;
         // $this->Total_Jumlah = $totalJumlah;

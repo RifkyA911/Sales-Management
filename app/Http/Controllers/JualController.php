@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Barryvdh\DomPDF\Facade\Pdf;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Jual;
 use App\Http\Requests\JualRequest;
 use Illuminate\Contracts\View\View;
@@ -87,5 +89,48 @@ class JualController extends Controller
         $jual->delete();
 
         return redirect()->route('juals.index')->with('success', 'Data berhasil dihapus.');
+    }
+
+    public function print($no_faktur)
+    {
+        $jual = \App\Models\Jual::with('details.barang')->findOrFail($no_faktur);
+
+        $pdf = Pdf::loadView('juals.partials.print', compact('jual'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('invoice-' . $no_faktur . '.pdf');
+    }
+
+    public function exportCsv()
+    {
+        $fileName = 'juals-' . date('Y-m-d') . '.csv';
+
+        $juals = \App\Models\Jual::with('customer')->get();
+
+        $response = new StreamedResponse(function () use ($juals) {
+            $handle = fopen('php://output', 'w');
+
+            // Header CSV
+            fputcsv($handle, ['No Faktur', 'Tanggal', 'Customer', 'Total Jumlah', 'Total Diskon', 'Total Bruto']);
+
+            // Data
+            foreach ($juals as $jual) {
+                fputcsv($handle, [
+                    $jual->No_Faktur,
+                    $jual->Tgl_Faktur,
+                    $jual->customer->Nama_Customer ?? '-',
+                    $jual->Total_Jumlah,
+                    $jual->Total_Diskon,
+                    $jual->Total_Bruto,
+                ]);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+
+        return $response;
     }
 }

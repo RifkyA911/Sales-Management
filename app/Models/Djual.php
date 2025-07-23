@@ -10,7 +10,7 @@ class Djual extends Model
     use HasFactory;
 
     protected $table = 'T_DJual';
-    // protected $primaryKey = 'No_Faktur';
+    protected $primaryKey = null;
     // Primary key adalah komposit, jadi kita tidak set $primaryKey secara tunggal
     // Kita override method setKeysForSaveQuery dan getQualifiedKeyName untuk Eloquent
     // agar bisa bekerja dengan primary key komposit.
@@ -55,6 +55,13 @@ class Djual extends Model
     // Contoh penggunaan find() untuk PK Komposit:
     // TDJual::where('No_Faktur', $noFaktur)->where('Kode_Barang', $kodeBarang)->first();
     // =========================================================================
+
+    protected function setKeysForSaveQuery($query)
+    {
+        return $query->where('No_Faktur', $this->getAttribute('No_Faktur'))
+            ->where('Kode_Barang', $this->getAttribute('Kode_Barang'));
+    }
+
 
     // --- Model Events untuk menghitung ulang total ---
     // protected static function booted()
