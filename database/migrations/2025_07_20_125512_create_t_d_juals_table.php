@@ -30,7 +30,7 @@ return new class extends Migration {
 
             // Definisi Foreign Keys
             // Merujuk ke tabel t_juals
-            $table->foreign('No_Faktur')->references('No_Faktur')->on('T_Jual')
+            $table->foreign('No_Faktur')->references('No_Faktur')->on('T_Jual')->onUpdate('cascade')
                 ->onDelete('cascade'); // Opsi: jika nota dihapus, detail juga ikut dihapus
 
             // Merujuk ke tabel t_barangs
