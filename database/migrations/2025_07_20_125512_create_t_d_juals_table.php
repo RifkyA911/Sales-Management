@@ -19,7 +19,7 @@ return new class extends Migration {
 
             // Kolom-kolom lainnya
             $table->decimal('Harga', 15, 2);
-            $table->decimal('Qty', 15, 2); // Qty bisa desimal? Kalau jumlah barang biasanya integer
+            $table->decimal('Qty', 15, 2);
             // Tapi sesuai ERD, kita pakai decimal.
             $table->decimal('Diskon', 15, 2);
             $table->decimal('Bruto', 15, 2);
