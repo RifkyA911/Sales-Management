@@ -41,11 +41,13 @@ class DJualFactory extends Factory
         return $this->state(function (array $attributes) use ($barang) {
             $qty = $this->faker->numberBetween(1, 5);
             $harga = $barang->Harga_Barang;
-            $diskon = min(8000, $this->faker->randomElement([0, (int) ($harga * 0.01), (int) ($harga * 0.05)])); // Diskon persen, max 80.00
-            // $diskon = round($diskon, 2); // Bulatkan diskon
-
             $bruto = $harga * $qty;
-            $jumlah = $bruto - $diskon;
+
+            // Diskon max 20% dari bruto atau maksimal Rp100.000
+            $diskonPersen = $this->faker->randomElement([0, 10, 20]); // 0%, 10%, 20%
+            $diskon = min($bruto * ($diskonPersen / 100), 100000);
+
+            $jumlah = max($bruto - $diskon, 0); // jangan sampai negatif
 
             return [
                 'Harga' => $harga,
@@ -56,4 +58,5 @@ class DJualFactory extends Factory
             ];
         });
     }
+
 }

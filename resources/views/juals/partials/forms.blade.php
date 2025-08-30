@@ -12,45 +12,66 @@
             </div>
 
             {{-- HEADER --}}
-            <div class="grid grid-cols-2 gap-4">
-                <!-- Kolom 1 -->
-                <div class="">
-                    <fieldset class="fieldset">
-                        <legend class="fieldset-legend">No. Faktur</legend>
-                        <input type="text" name="No_Faktur" id="No_Faktur" class="input w-full"
-                            placeholder="Masukkan No Faktur" required maxlength="20" readonly
-                            value="{{ $jual->No_Faktur }}">
-                        <p class="mt-1 text-sm text-red-500" id="error_No_Faktur"></p>
-                    </fieldset>
+            <form id="jualForm">
+                @csrf
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Kolom 1 -->
+                    <div class="">
+                        <fieldset class="fieldset">
+                            <legend class="fieldset-legend">No. Faktur</legend>
+                            <input type="text" name="No_Faktur" id="No_Faktur" class="input w-full"
+                                placeholder="Masukkan No Faktur" required maxlength="20" readonly
+                                value="{{ $jual->No_Faktur }}">
+                            <p class="mt-1 text-sm text-red-500" id="error_No_Faktur"></p>
+                        </fieldset>
 
-                    <fieldset class="fieldset">
-                        <legend class="fieldset-legend">Kode Customer</legend>
-                        <select class="select w-full" id="customersSelect" name="Kode_Customer" required disabled
-                            value="{{ $jual->Kode_Customer }}">
-                            <option value="" disabled selected>Pilih Customer</option>
-                        </select>
-                        <p class="mt-1 text-sm text-red-500" id="error_Kode_Customer"></p>
-                    </fieldset>
-                </div>
+                        <fieldset class="fieldset">
+                            <legend class="fieldset-legend">Kode Customer</legend>
+                            <select class="select w-full" id="customersSelect" name="Kode_Customer" required disabled
+                                value="{{ $jual->Kode_Customer }}">
+                                <option value="" disabled selected>Pilih Customer</option>
+                            </select>
+                            <p class="mt-1 text-sm text-red-500" id="error_Kode_Customer"></p>
+                        </fieldset>
+                    </div>
 
-                <!-- Kolom 2 -->
-                <div class="">
-                    <fieldset class="fieldset">
-                        <legend class="fieldset-legend">Tanggal Faktur</legend>
-                        <input type="date" class="input w-full" name="Tgl_Faktur" readonly
-                            value="{{ $jual->Tgl_Faktur }}" />
-                        <p class="mt-1 text-sm text-red-500" id="error_Tgl_Faktur"></p>
-                    </fieldset>
-                    <fieldset class="fieldset">
-                        <legend class="fieldset-legend">Jenis Transaksi</legend>
-                        <select class="select w-full" id="jensSelect" name="Kode_Tjen" required disabled
-                            value="{{ $jual->Kode_Tjen }}">
-                            <option value="" disabled selected>Pilih Jenis Transaksi</option>
-                        </select>
-                        <p class="mt-1 text-sm text-red-500" id="error_Kode_Tjen"></p>
-                    </fieldset>
+                    <!-- Kolom 2 -->
+                    <div class="">
+                        <fieldset class="fieldset">
+                            <legend class="fieldset-legend">Tanggal Faktur</legend>
+                            <input type="date" class="input w-full" id="Tgl_Faktur" name="Tgl_Faktur" readonly
+                                value="{{ $jual->Tgl_Faktur }}" />
+                            <p class="mt-1 text-sm text-red-500" id="error_Tgl_Faktur"></p>
+                        </fieldset>
+                        <fieldset class="fieldset">
+                            <legend class="fieldset-legend">Jenis Transaksi</legend>
+                            <select class="select w-full" id="jensSelect" name="Kode_Tjen" required disabled
+                                value="{{ $jual->Kode_Tjen }}">
+                                <option value="" disabled selected>Pilih Jenis Transaksi</option>
+                            </select>
+                            <p class="mt-1 text-sm text-red-500" id="error_Kode_Tjen"></p>
+                        </fieldset>
+                    </div>
+                    <div class="hidden">
+                        <input type="hidden" name="Total_Bruto" id="Header_Total_Bruto" value="{{ $jual->Total_Bruto }}">
+                        <input type="hidden" name="Total_Diskon" id="Header_Total_Diskon"
+                            value="{{ $jual->Total_Diskon }}">
+                        <input type="hidden" name="Total_Jumlah" id="Header_Total_Jumlah"
+                            value="{{ $jual->Total_Jumlah }}">
+                    </div>
                 </div>
-            </div>
+                <div class="flex justify-end gap-4 mt-4">
+                    <button type="button" id="JualBtnFormSubmitCancel" class="btn hidden mt-4"><i
+                            class="fa-solid fa-database mr-2"></i>
+                        Batal</button>
+                    <button type="button" id="JualBtnFormSubmit" class="btn btn-accent text-white mt-4"><i
+                            class="fa-solid fa-database mr-2"></i>
+                        Edit</button>
+                    <button type="submit" id="JualBtnFormSubmit_True" class="btn btn-info hidden text-white mt-4"><i
+                            class="fa-solid fa-database mr-2"></i>
+                        Simpan</button>
+                </div>
+            </form>
 
             <hr class="my-4 border-gray-200" />
 
@@ -97,8 +118,8 @@
                     </fieldset>
                     <fieldset class="fieldset  col-span-1">
                         <legend class="fieldset-legend">Diskon %</legend>
-                        <input type="text" name="Diskon" id="Diskon" class="input " placeholder="Diskon" required
-                            step="0.01" min="0" disabled>
+                        <input type="text" name="Diskon" id="Diskon" class="input " placeholder="Diskon"
+                            required step="0.01" min="0" disabled>
                         <p class="mt-1 text-sm text-red-500" id="error_Diskon"></p>
                     </fieldset>
                     <fieldset class="fieldset  col-span-2">
@@ -164,17 +185,17 @@
                 <div class="flex justify-between items-center">
                     <h5 class="font-bold">Total Bruto (IDR)</h5>
                     <input id="Total_Bruto" type="text" readonly class="input text-right font-bold"
-                        value="{{ 'Rp ' . number_format($jual->Total_Bruto, 2, ',', '.') }}">
+                        value="{{ $jual->Total_Bruto }}">
                 </div>
                 <div class="flex justify-between items-center">
-                    <h5 class="font-bold">Total Diskon %</h5>
+                    <h5 class="font-bold">Total Diskon (IDR)</h5>
                     <input id="Total_Diskon" type="text" readonly class="input text-right font-bold"
                         value="{{ $jual->Total_Diskon }}">
                 </div>
                 <div class="flex justify-between items-center">
                     <h5 class="font-bold">Total Jumlah (IDR)</h5>
                     <input id="Total_Jumlah" type="text" readonly class="input text-right font-bold"
-                        value="{{ 'Rp ' . number_format($jual->Total_Jumlah, 2, ',', '.') }}">
+                        value="{{ $jual->Total_Jumlah }}">
                 </div>
             </div>
         </div>
@@ -184,6 +205,55 @@
     @push('scripts')
         <script>
             document.addEventListener("DOMContentLoaded", function() {
+                $('#JualBtnFormSubmit').on('click', function() {
+                    $('#No_Faktur').removeAttr('readonly');
+                    $('#customersSelect').removeAttr('disabled');
+                    $('#Tgl_Faktur').removeAttr('readonly', );
+                    $('#jensSelect').removeAttr('disabled');
+
+                    $('#JualBtnFormSubmitCancel').removeClass('hidden');
+                    $('#JualBtnFormSubmit').addClass('hidden');
+                    $('#JualBtnFormSubmit_True').removeClass('hidden');
+                });
+
+
+                function hideJualFormButton() {
+                    $('#No_Faktur').attr('readonly', true);
+                    $('#customersSelect').attr('disabled', true);
+                    $('#Tgl_Faktur').attr('readonly', true);
+                    $('#jensSelect').attr('disabled', true);
+                    $('#JualBtnFormSubmitCancel').addClass('hidden');
+                    $('#JualBtnFormSubmit').removeClass('hidden');
+                    $('#JualBtnFormSubmit_True').addClass('hidden');
+                }
+                $('#JualBtnFormSubmitCancel').on('click', function() {
+                    hideJualFormButton()
+                });
+
+                $('#jualForm').on('submit', function(e) {
+                    e.preventDefault();
+                    console.log('jualForm data:', $(this).serialize());
+                    $.ajax({
+                        url: "{{ route('juals.update', $jual->No_Faktur) }}",
+                        type: "PUT",
+                        data: $(this).serialize(),
+                        success: async function(response) {
+                            console.log("Update Success:", response);
+                            hideJualFormButton()
+                            showToast('Data berhasil diperbarui', 'success');
+                            setTimeout(function() {
+                                window.location.href =
+                                    `/juals/${$('#No_Faktur').val()}/edit`;
+                            }, 1500);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Update Error:", xhr.responseText);
+                            alert("Gagal memperbarui data. Silakan coba lagi.");
+                        }
+                    });
+
+                });
+
                 // ------------------------------------- Data Entry -------------------------------------
                 $.ajax({
                     url: "{{ route('customers.index') }}",
@@ -195,8 +265,10 @@
                             '<option value="" disabled >Pilih Customer</option>'
                         );
                         response.data.forEach(customer => {
+                            const selected = customer.Kode_Customer ===
+                                "{{ $jual->Kode_Customer }}" ? 'selected' : '';
                             $('#customersSelect').append(
-                                `<option value="${customer.Kode_Customer}">${customer.Nama_Customer}</option>`
+                                `<option value="${customer.Kode_Customer}" ${selected}>${customer.Nama_Customer}</option>`
                             )
                         });
                     }
@@ -205,35 +277,20 @@
                     url: "{{ route('jens.index') }}",
                     type: "GET",
                     success: function(response) {
-                        // console.log('Jens:', response);
+                        console.log('Jens:', response);
                         $('#jensSelect').empty();
                         $('#jensSelect').append(
                             '<option value="" disabled >Pilih Jenis Transaksi</option>'
                         );
                         response.data.forEach(jens => {
+                            const selected = jens.Kode_Tjen === "{{ $jual->Kode_Tjen }}" ?
+                                'selected' : '';
                             $('#jensSelect').append(
-                                `<option value="${jens.Kode_Tjen}">${jens.Nama_Tjen}</option>`
+                                `<option value="${jens.Kode_Tjen}" ${selected}>${jens.Nama_Tjen}</option>`
                             )
                         });
                     }
                 });
-
-                // $.ajax({
-                //     url: "{{ route('barangs.index') }}",
-                //     method: 'GET',
-                //     success: function(response) {
-                //         // console.log('Barangs:', response);
-
-                //         response.data.forEach(function(barang) {
-                //             $('#Kode_Barang').append(
-                //                 `<option value="${barang.Kode_Barang}">${barang.Kode_Barang}</option>`
-                //             );
-                //             $('#Nama_Barang').append(
-                //                 `<option value="${barang.Nama_Barang}" data-kode-barang="${barang.Kode_Barang}">${barang.Nama_Barang}</option>`
-                //             );
-                //         });
-                //     }
-                // });
 
                 function updateBarangDropdown(barangs) {
                     $('#Kode_Barang').empty().append(
@@ -273,7 +330,7 @@
                             $('#Qty').val('0');
                             $('#Diskon').val('0');
                             $('#Nama_Barang').val(response.data.Nama_Barang);
-                            return $('#Harga').val(response.data.Harga_Barang);
+                            return $('#Harga').val(parseFloat(response.data.Harga_Barang).toLocaleString());
                         })
                         .catch(error => {
                             console.error("Error fetching harga:", error);
@@ -301,7 +358,7 @@
                             $('#Diskon').removeAttr('disabled', false);
                             $('#Qty').val('0');
                             $('#Diskon').val('0');
-                            return $('#Harga').val(response.data.Harga_Barang);
+                            return $('#Harga').val(parseFloat(response.data.Harga_Barang).toLocaleString());
                         })
                         .catch(error => {
                             console.error("Error fetching harga:", error);
@@ -327,17 +384,17 @@
 
                     $(this).val(value);
 
-                    const harga = parseFloat($('#Harga').val()) || 0;
+                    const harga = parseFloat($('#Harga').val().replace(/,/g, '')) || 0;
                     const diskon = parseFloat($('#Diskon').val()) || 0;
                     const qty = parseFloat(value) || 0;
 
                     const bruto = harga * qty; // nilai kotor
-                    $('#Bruto').val(bruto.toFixed(2));
                     const netto = bruto - (bruto * (diskon / 100)); // nilai bersih
-                    $('#Jumlah').val(netto.toFixed(2));
+                    $('#Bruto').val(bruto.toLocaleString());
+
+                    $('#Jumlah').val(netto.toLocaleString());
+
                 });
-
-
 
                 $('#Diskon').on('input', function() {
                     let value = $(this).val();
@@ -352,14 +409,18 @@
 
                     $(this).val(value);
 
-                    const harga = parseFloat($('#Harga').val()) || 0;
+                    const harga = parseFloat($('#Harga').val().replace(/,/g, '')) || 0;
                     const diskon = parseFloat(value) || 0;
                     const qty = parseFloat($('#Qty').val()) || 0;
 
                     const bruto = harga * qty; // nilai kotor
-                    $('#Bruto').val(bruto.toFixed(2));
                     const netto = bruto - (bruto * (diskon / 100)); // nilai bersih
-                    $('#Jumlah').val(netto.toFixed(2));
+                    // $('#Bruto').val(bruto.toFixed(2));
+                    // $('#Jumlah').val(netto.toFixed(2));
+                    $('#Bruto').val(bruto.toLocaleString());
+
+                    $('#Jumlah').val(netto.toLocaleString());
+
                 });
 
                 // ------------------------------------- Table Jual Detail -------------------------------------
@@ -399,6 +460,13 @@
                         {
                             data: 'Diskon',
                             title: 'Diskon  %',
+                            render: function(data, type, row) {
+                                const bruto = parseFloat(row.Bruto);
+                                const diskonPersen = parseFloat(data);
+                                const diskonRp = bruto * diskonPersen / 100;
+
+                                return data + ' % (Rp ' + diskonRp.toLocaleString() + ')';
+                            }
                         },
                         {
                             data: 'Bruto',
@@ -477,11 +545,11 @@
                             $('#Nama_Barang').empty().append(
                                 `<option value="${namaBarang}" selected>${namaBarang}</option>`
                             ).prop('disabled', true);
-                            $('#Harga').val(response.data.Harga);
+                            $('#Harga').val(parseFloat(response.data.Harga).toLocaleString());
                             $('#Qty').val(response.data.Qty).removeAttr('disabled');
                             $('#Diskon').val(response.data.Diskon).removeAttr('disabled');
-                            $('#Bruto').val(response.data.Bruto);
-                            $('#Jumlah').val(response.data.Jumlah);
+                            $('#Bruto').val(parseFloat(response.data.Bruto).toLocaleString());
+                            $('#Jumlah').val(parseFloat(response.data.Jumlah).toLocaleString());
 
                             // Ubah ke mode edit
                             editMode = true;
@@ -522,6 +590,12 @@
                             $('#Total_Bruto').val(response.data.Total_Bruto);
                             $('#Total_Diskon').val(response.data.Total_Diskon);
                             $('#Total_Jumlah').val(response.data.Total_Jumlah);
+                            $('#Harga').val('');
+                            $('#Qty').val('');
+                            $('#Diskon').val('');
+                            $('#Bruto').val('');
+                            $('#Jumlah').val('');
+                            resetFormToAddMode()
                             updateBarangDropdown(response.data.availableBarangs);
                             showToast(response.message, 'success');
                             $('#jualDetailTable').DataTable().ajax.reload();
@@ -544,6 +618,13 @@
                     formData.push({
                         name: 'No_Faktur',
                         value: '{{ $jual->No_Faktur }}'
+                    });
+
+                    // Hilangkan koma di Harga, Bruto, dan Jumlah
+                    formData.forEach(item => {
+                        if (['Harga', 'Bruto', 'Jumlah'].includes(item.name)) {
+                            item.value = item.value.replace(/,/g, '');
+                        }
                     });
 
                     const url = editMode ? editUrl : "{{ route('djuals.store') }}";

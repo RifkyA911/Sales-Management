@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class JualRequest extends FormRequest
 {
@@ -13,8 +14,9 @@ class JualRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
-            'No_Faktur' => "required|string|size:6|unique:T_Jual,No_Faktur",
+
+        $rules = [
+            // 'No_Faktur' => "required|string|size:6|unique:T_Jual,No_Faktur",
             'Kode_Customer' => 'required|string|size:4|exists:T_Customer,Kode_Customer',
             'Kode_Tjen' => 'required|string|size:1|exists:T_JEN,Kode_Tjen',
             'Tgl_Faktur' => 'required|date',
@@ -22,6 +24,22 @@ class JualRequest extends FormRequest
             'Total_Diskon' => 'required|numeric',
             'Total_Jumlah' => 'required|numeric',
         ];
+
+        if ($this->isMethod('post')) {
+            $rules['No_Faktur'] = 'required|string|unique:T_Jual,No_Faktur';
+        }
+
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            $rules['No_Faktur'] = [
+                'required',
+                'string',
+                'size:6',
+                Rule::unique('T_Jual', 'No_Faktur')->ignore($this->input('No_Faktur'), 'No_Faktur'),
+            ];
+        }
+
+
+        return $rules;
     }
 
     public function messages(): array

@@ -50,27 +50,33 @@
                                 data: 'Total_Bruto',
                                 title: 'Total Bruto (IDR)',
                                 render: function(data) {
-                                    return new Intl.NumberFormat('id-ID', {
-                                        style: 'currency',
-                                        currency: 'IDR'
-                                    }).format(data);
+                                    // return new Intl.NumberFormat('id-ID', {
+                                    //     style: 'currency',
+                                    //     currency: 'IDR'
+                                    // }).format(data);
+                                    return 'Rp ' + parseFloat(data).toLocaleString()
                                 }
                             },
                             {
                                 data: 'Total_Diskon',
-                                title: 'Total Diskon %',
+                                title: 'Total Diskon (IDR)',
                                 render: function(data) {
-                                    return `${data}`;
+                                    // return new Intl.NumberFormat('id-ID', {
+                                    //     style: 'currency',
+                                    //     currency: 'IDR'
+                                    // }).format(data);
+                                    return 'Rp ' + parseFloat(data).toLocaleString()
                                 }
                             },
                             {
                                 data: 'Total_Jumlah',
                                 title: 'Total Jumlah (IDR)',
                                 render: function(data) {
-                                    return new Intl.NumberFormat('id-ID', {
-                                        style: 'currency',
-                                        currency: 'IDR'
-                                    }).format(data);
+                                    // return new Intl.NumberFormat('id-ID', {
+                                    //     style: 'currency',
+                                    //     currency: 'IDR'
+                                    // }).format(data);
+                                    return 'Rp ' + parseFloat(data).toLocaleString()
                                 }
                             },
                             {
@@ -142,6 +148,12 @@
                         });
                     });
 
+                    $(document).on('click', '.jualAlertMessageClose', function() {
+                        // $('#jualAlertMessage').addClass('hidden');
+                        console.log('Close Alert Message');
+                        $('#jualModal').removeClass('modal-open');
+                    });
+
                     // Hapus Data
                     $(document).on('click', '.jual-delete', function(e) {
                         e.preventDefault();
@@ -165,7 +177,10 @@
                             },
                             error: function(xhr) {
                                 console.error('Gagal menghapus:', xhr.responseText);
-                                alert('Terjadi kesalahan saat menghapus data');
+                                showToast(xhr.responseJSON.message ||
+                                    'Gagal menghapus penjualan',
+                                    'error');
+                                // alert('Terjadi kesalahan saat menghapus data');
                             }
                         });
                     });

@@ -49,8 +49,14 @@ class Jual extends Model
     public function recalculateTotals()
     {
         $totalBruto = $this->details->sum('Bruto');
-        $totalDiskon = $this->details->sum('Diskon');
-        $totalJumlah = $this->details->sum('Jumlah');
+
+        // Hitung diskon nominal untuk setiap detail
+        $totalDiskon = $this->details->sum(function ($detail) {
+            return ($detail->Bruto * $detail->Diskon / 100);
+        });
+
+        // Total setelah diskon
+        $totalJumlah = $totalBruto - $totalDiskon;
 
         // Penting: agar tidak terjadi loop rekursif jika ada event di TJual
         $this->updateQuietly([
@@ -58,9 +64,5 @@ class Jual extends Model
             'Total_Diskon' => $totalDiskon,
             'Total_Jumlah' => $totalJumlah,
         ]);
-        // $this->Total_Bruto = $totalBruto;
-        // $this->Total_Diskon = $totalDiskon;
-        // $this->Total_Jumlah = $totalJumlah;
-        // $this->save(['timestamps' => false]); // Matikan timestamps jika tidak ingin updated_at berubah
     }
 }

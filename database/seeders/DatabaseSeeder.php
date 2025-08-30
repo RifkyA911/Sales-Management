@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class, // Kode_Customer di T_Jual
             BarangSeeder::class,   // Kode_Barang di T_D_Jual
 
-            JualSeeder::class,     // No_Faktur di T_D_Jual, dan butuh TJen, TCustomer
+            // JualSeeder::class,     // No_Faktur di T_D_Jual, dan butuh TJen, TCustomer
             // TDJualSeeder::class, // Tidak perlu lagi karena TDJual dibuat di TJualSeeder
         ]);
     }

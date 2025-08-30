@@ -36,8 +36,6 @@ class JualSeeder extends Seeder
             });
 
         // --- Opsional: Recalculate Totals (Karena tidak pakai trigger/event di model) ---
-        // Jika Anda ingin Total_Bruto, Total_Diskon, Total_Jumlah terisi setelah seeding
-        // Ini bisa dipanggil di sini setelah semua TDJual dibuat.
         Jual::all()->each(function ($jual) {
             $jual->recalculateTotals(); // Panggil method yang ada di model TJual
         });

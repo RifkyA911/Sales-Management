@@ -69,6 +69,9 @@ class JualController extends Controller
             ['label' => 'Home', 'url' => route('juals.index'), 'active' => false, 'icon' => 'fa-home'],
             ['label' => 'Edit Jual', 'url' => route('juals.edit', $no_faktur), 'active' => true, 'icon' => 'fa-pen']
         ];
+        // $jual->Total_Bruto = 'Rp ' . number_format($jual->Total_Bruto, 2, ',', '.');
+        // $jual->Total_Diskon = 'Rp ' . number_format($jual->Total_Diskon, 2, ',', '.');
+        // $jual->Total_Jumlah = 'Rp ' . number_format($jual->Total_Jumlah, 2, ',', '.');
         return view('juals.edit', compact('jual', 'breadcrumbs'));
     }
 
@@ -83,9 +86,18 @@ class JualController extends Controller
         return redirect()->route('juals.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy($id): RedirectResponse|JsonResponse
     {
         $jual = Jual::findOrFail($id);
+
+        if ($jual->details()->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa menghapus, masih ada detail penjualan untuk No Faktur ini.'
+            ], 400);
+        }
+
+
         $jual->delete();
 
         return redirect()->route('juals.index')->with('success', 'Data berhasil dihapus.');

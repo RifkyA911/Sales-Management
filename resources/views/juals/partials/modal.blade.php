@@ -4,7 +4,7 @@
 <dialog id="jualModal" class="modal ">
     <div id='jualContent' class="modal-box p-4 bg-white rounded-lg shadow-lg sm:p-6 relative">
         <div class="flex justify-between items-start mb-4">
-            <button class="absolute top-4 right-4 btn btn-sm btn-circle btn-ghost closeJualModal"><i
+            <button class="absolute top-4 right-4 btn btn-sm btn-circle btn-ghost "><i
                     class="fa-solid fa-xmark text-xl "></i></button>
             <div class="flex items-center gap-4">
                 <i class="fa-solid fa-money-bill-wave text-xl"></i>
@@ -46,7 +46,7 @@
             <input type="hidden" name="Total_Jumlah" value="0">
 
             <div class="modal-action">
-                <button type="button" class="btn closeJualModal">Batal</button>
+                <button type="button" class="btn jualAlertMessageClose">Batal</button>
                 <button type="submit" class="btn btn-info text-white">Simpan</button>
             </div>
         </form>
@@ -69,14 +69,14 @@
                     data: $(this).serialize(),
                     success: function(response) {
                         $('#jualContent').html(`
-                            <div class="flex flex-col items-center justify-center p-6">
+                            <div class="flex flex-col items-center justify-center p-6 jualAlertMessageClose">
                                 <div class="flex flex-col justify-start text-center h-36">
                                     <i class="fa-solid fa-circle-check text-green-500 text-6xl mb-4"></i>
                                     <p class="text-lg font-semibold">Data <span class="id_invoice"></span> berhasil disimpan!</p>
                                 </div>
                             </div>
                             <div class="flex justify-center gap-4 mt-4">
-                                    <button class="btn closeJualModal">Tutup</button>
+                                    <button class="btn jualAlertMessageClose">Tutup</button>
                                     <button id="tambahBarangBtn" class="btn btn-success text-white">
                                         Tambah
                                         Data Barang <i class="fa-solid fa-arrow-right"></i></button>
@@ -110,7 +110,9 @@
                         }
 
                     }
+
                 });
+
             });
 
         });

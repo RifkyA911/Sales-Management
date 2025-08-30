@@ -24,10 +24,10 @@ class DjualRequest extends FormRequest
     {
         $rules = [
             'No_Faktur' => 'required|exists:T_Jual,No_Faktur',
-            'Kode_Barang' => [
-                'required',
-                'exists:T_Barang,Kode_Barang',
-            ],
+            // 'Kode_Barang' => [
+            //     'required',
+            //     'exists:T_Barang,Kode_Barang',
+            // ],
             'Harga' => 'required|numeric|min:0',
             'Qty' => 'required|numeric|min:0.01',
             'Diskon' => 'required|numeric|min:0',
@@ -35,17 +35,40 @@ class DjualRequest extends FormRequest
             'Jumlah' => 'required|numeric|min:0',
         ];
 
-        // Cek untuk create (POST)
+        // // Cek untuk create (POST)
+        // if ($this->isMethod('post')) {
+        //     $rules['Kode_Barang'][] = Rule::unique('T_DJual')->where(function ($query) {
+        //         return $query->where('No_Faktur', $this->No_Faktur);
+        //     });
+        // }
+
+        // // Untuk update (PUT/PATCH) tidak perlu unique check
+        // if ($this->isMethod('put') || $this->isMethod('patch')) {
+        //     $rules['Kode_Barang'][] = Rule::exists('T_Barang', 'Kode_Barang');
+        // }
+
+        // if ($this->isMethod('post')) {
+        //     $rules['Kode_Barang'][] = Rule::unique('T_DJual', 'Kode_Barang')
+        //         ->where('No_Faktur', $this->No_Faktur);
+        // }
+
+        // if ($this->isMethod('put') || $this->isMethod('patch')) {
+        //     $rules['Kode_Barang'][] = Rule::unique('T_DJual', 'Kode_Barang')
+        //         ->ignore($this->route('kodeBarang'), 'Kode_Barang')
+        //         ->where('No_Faktur', $this->No_Faktur);
+        // }
+
         if ($this->isMethod('post')) {
-            $rules['Kode_Barang'][] = Rule::unique('T_DJual')->where(function ($query) {
-                return $query->where('No_Faktur', $this->No_Faktur);
-            });
+            $rules['Kode_Barang'][] = Rule::unique('T_DJual', 'Kode_Barang')
+                ->where(fn($q) => $q->where('No_Faktur', $this->No_Faktur));
         }
 
-        // Untuk update (PUT/PATCH) tidak perlu unique check
         if ($this->isMethod('put') || $this->isMethod('patch')) {
-            $rules['Kode_Barang'][] = Rule::exists('T_Barang', 'Kode_Barang');
+            $rules['Kode_Barang'][] = Rule::unique('T_DJual', 'Kode_Barang')
+                ->ignore($this->route('kodeBarang'), 'Kode_Barang')
+                ->where(fn($q) => $q->where('No_Faktur', $this->No_Faktur));
         }
+
 
         return $rules;
     }

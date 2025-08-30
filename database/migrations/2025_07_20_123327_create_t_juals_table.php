@@ -21,8 +21,16 @@ return new class extends Migration {
             // $table->timestamps();
 
             // Definisi Foreign Key
-            $table->foreign('Kode_Customer')->references('Kode_Customer')->on('T_Customer');
-            $table->foreign('Kode_Tjen')->references('Kode_Tjen')->on('T_JEN');
+            $table->foreign('Kode_Customer')
+                ->references('Kode_Customer')
+                ->on('T_Customer')
+                ->onUpdate('cascade');
+
+            $table->foreign('Kode_Tjen')
+                ->references('Kode_Tjen')
+                ->on('T_JEN')
+                ->onUpdate('cascade');
+
         });
     }
 

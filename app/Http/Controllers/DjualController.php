@@ -62,7 +62,7 @@ class DjualController extends Controller
             'message' => 'Detail penjualan berhasil ditambahkan',
             'data' => [
                 'Total_Bruto' => 'Rp ' . number_format($djual->jual->Total_Bruto, 2, ',', '.'),
-                'Total_Diskon' => $djual->jual->Total_Diskon,
+                'Total_Diskon' => 'Rp ' . number_format($djual->jual->Total_Diskon, 2, ',', '.'),
                 'Total_Jumlah' => 'Rp ' . number_format($djual->jual->Total_Jumlah, 2, ',', '.'),
                 'availableBarangs' => $availableBarangs,
             ]
@@ -102,8 +102,11 @@ class DjualController extends Controller
             'message' => 'Detail penjualan berhasil diperbarui',
             'data' => [
                 'Total_Bruto' => 'Rp ' . number_format($djual->jual->Total_Bruto, 2, ',', '.'),
-                'Total_Diskon' => $djual->jual->Total_Diskon,
+                'Total_Diskon' => 'Rp ' . number_format($djual->jual->Total_Diskon, 2, ',', '.'),
                 'Total_Jumlah' => 'Rp ' . number_format($djual->jual->Total_Jumlah, 2, ',', '.'),
+                // 'Total_Bruto' => $djual->jual->Total_Bruto,
+                // 'Total_Diskon' => $djual->jual->Total_Diskon,
+                // 'Total_Jumlah' => $djual->jual->Total_Jumlah,
                 'availableBarangs' => $availableBarangs,
             ]
         ]);
@@ -129,7 +132,7 @@ class DjualController extends Controller
             'message' => 'Detail penjualan berhasil dihapus',
             'data' => [
                 'Total_Bruto' => 'Rp ' . number_format($jual->Total_Bruto, 2, ',', '.'),
-                'Total_Diskon' => $jual->Total_Diskon,
+                'Total_Diskon' => 'Rp ' . number_format($jual->Total_Diskon, 2, ',', '.'),
                 'Total_Jumlah' => 'Rp ' . number_format($jual->Total_Jumlah, 2, ',', '.'),
                 'availableBarangs' => $availableBarangs,
             ]
