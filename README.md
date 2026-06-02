@@ -2,16 +2,16 @@
 
 # Sales Management System
 
-Sistem manajemen penjualan berbasis web.
+A web-based sales management system for managing products, transactions, and sales reports.
 
-## Fitur
+## Features
 
-- Manajemen produk
-- Transaksi penjualan
-- Laporan penjualan harian/bulanan
-- Manajemen stok otomatis
+- Product management (add, edit, delete)
+- Sales transactions
+- Daily/monthly sales reports
+- Automated stock management
 
-## Cara Instalasi
+## Installation
 
 `ash
 git clone https://github.com/RifkyA911/Sales-Management.git
